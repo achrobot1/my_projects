@@ -1,0 +1,63 @@
+#-----------------------------------------------------------
+# Vivado v2018.2 (64-bit)
+# SW Build 2258646 on Thu Jun 14 20:02:38 MDT 2018
+# IP Build 2256618 on Thu Jun 14 22:10:49 MDT 2018
+# Start of session at: Wed Sep  4 20:40:10 2019
+# Process ID: 5054
+# Current directory: /home/user/my_projects
+# Command line: vivado
+# Log file: /home/user/my_projects/vivado.log
+# Journal file: /home/user/my_projects/vivado.jou
+#-----------------------------------------------------------
+start_gui
+create_project ZYBO_getting_started /home/user/my_projects/ZYBO_getting_started -part xc7z010clg400-1
+set_property board_part digilentinc.com:zybo:part0:1.0 [current_project]
+create_bd_design "design_1"
+update_compile_order -fileset sources_1
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" apply_board_preset "1" Master "Disable" Slave "Disable" }  [get_bd_cells processing_system7_0]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_0
+endgroup
+set_property location {785 -401} [get_bd_intf_ports DDR]
+set_property location {683 -391} [get_bd_intf_ports DDR]
+set_property location {1.5 715 -232} [get_bd_cells axi_gpio_0]
+set_property -dict [list CONFIG.C_IS_DUAL {1}] [get_bd_cells axi_gpio_0]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_1
+endgroup
+set_property location {2 746 -60} [get_bd_cells axi_gpio_1]
+startgroup
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_gpio_0/S_AXI} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins axi_gpio_0/S_AXI]
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Board_Interface {btns_4bits ( 4 Buttons ) } Manual_Source {Auto}}  [get_bd_intf_pins axi_gpio_0/GPIO]
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Board_Interface {sws_4bits ( 4 Switches ) } Manual_Source {Auto}}  [get_bd_intf_pins axi_gpio_0/GPIO2]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_gpio_1/S_AXI} intc_ip {New AXI Interconnect} master_apm {0}}  [get_bd_intf_pins axi_gpio_1/S_AXI]
+apply_bd_automation -rule xilinx.com:bd_rule:board -config { Board_Interface {leds_4bits ( 4 LEDs ) } Manual_Source {Auto}}  [get_bd_intf_pins axi_gpio_1/GPIO]
+endgroup
+validate_bd_design
+make_wrapper -files [get_files /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.srcs/sources_1/bd/design_1/design_1.bd] -top
+add_files -norecurse /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+wait_on_run impl_1
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+wait_on_run impl_1
+regenerate_bd_layout
+save_bd_design
+validate_bd_design -force
+save_bd_design
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+wait_on_run impl_1
+make_wrapper -files [get_files /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.srcs/sources_1/bd/design_1/design_1.bd] -top
+import_files -force -norecurse /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+open_bd_design {/home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.srcs/sources_1/bd/design_1/design_1.bd}
+open_bd_design {/home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.srcs/sources_1/bd/design_1/design_1.bd}
+open_run impl_1
+file mkdir /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.sdk
+file copy -force /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.runs/impl_1/design_1_wrapper.sysdef /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.sdk/design_1_wrapper.hdf
+
+launch_sdk -workspace /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.sdk -hwspec /home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.sdk/design_1_wrapper.hdf
+open_bd_design {/home/user/my_projects/ZYBO_getting_started/ZYBO_getting_started.srcs/sources_1/bd/design_1/design_1.bd}
